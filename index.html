@@ -1,85 +1,170 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <title> WELCOME TO THE STRIVE TEAM GENERATOR!</title>
-  </head>
-  <body>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1 class="display-4">Welcome to the Strive Group Generator</h1>
-          <p class="lead">In here you can generate teams and assign the participants to them.</p>
-        </div>
-      </div>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title> WELCOME TO THE STRIVE TEAM GENERATOR!</title>
+</head>
+
+<body>
+  <div class="jumbotron jumbotron-fluid">
     <div class="container">
+      <h1 class="display-4">Welcome to the Strive Group Generator</h1>
+      <p class="lead">In here you can generate teams and assign the participants to them.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
         <p class="table-creation">Please insert the name of participants and press "add"</p>
-        <div class="input-group mb-3 ">
-            <input id="new-person" type="text" class="form-control" placeholder="Participant's name" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" id="add-button">Add to list</button>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input id="group-counter" type="text" class="form-control" placeholder="Type size of the group" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" id="group-button">Add </button>
-            </div>
-          </div>
-    </div> 
-     
-    <div class="container list-creation">
-        <ul id ="persons-list" class="list-group">
-            
-          </ul>
+      </div>
+      <div class="col-6">
+<p class="table-creation">Add number of teams you want</p></div>
+
+      <div class="col-6 ">
+        <form onsubmit="addPerson(event)">
+          <input id="new-person" type="text" class="form-control" placeholder="Participant's name"
+            aria-label="Recipient's username" aria-describedby="basic-addon2">
+
+          <button class="btn btn-outline-secondary" type="submit" id="add-button">Add to list</button>
+        </form>
+      </div>
+
+      <div class="col-6 ">
+        <button class= "btn btn-outline-secondary mr-3" onclick="addTeam()">Increase </button><span id="team-number" >2</span>
+
+        <!-- <button class="btn btn-outline-secondary" type="button" id="team-number-button">Submit</button> -->
+      </div>
+
     </div>
 
-    <!-- Optional JavaScript; choose one of the two! -->
-    <script>
 
-        
-        
-        const addNewPerson = function () {
-            let addedPerson = document.getElementById("new-person").value
-          let ul = document.getElementById("persons-list");
-          let li = document.createElement("li");
-          li.innerText = addedPerson
-          ul.appendChild(li)
-          document.getElementById("new-person").value = ""
-        }
-        
-        let addPersonbtn = document.getElementById("add-button")
-        addPersonbtn.onclick = addNewPerson
+    <div class="col-6 mx-auto">
+      <div class="list-creation">
+        <p class="table-creation"> Your particiants
+        </p>
 
+        <ul id="persons-list" class="list-group">
+        </ul>
+        <button class="btn btn-outline-secondary mx-auto mt-2 " onclick="assign()">Assign</button>
+      </div>
+    </div>
+    <div class="col-12 my-5">
+      <div id= "teams-row" class="row">
         
-        const createList= function (){
-        let arrayOfPeople=[]
-        for (i=0; i<document.querySelectorAll("li").length; i++) {
         
-        arrayOfPeople.push(document.querySelectorAll("li")[i].innerText)}
-        return arrayOfPeople }
-        
-        
-        
-       
-    
-    </script>
+    </div>
 
-    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+  </div>
+  </div>
+  <!-- Optional JavaScript; choose one of the two! -->
+  <script>
 
-    
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
+    const newPerson = document.querySelector("#new-person")
+    const personsList = document.querySelector("#persons-list")
+    const teamsRow= document.querySelector("#teams-row")
+    const teamNumber = document.querySelector("#team-number")
+
+    function addPerson(event) {
+      event.preventDefault()
+
+
+      const li = document.createElement("li")
+      li.classList.add("list-group-item")
+      li.innerHTML = newPerson.value
+      personsList.appendChild(li)
+    }
+    window.onload = function() {
+      createTeams()
+    }
+    function createTeams () {
+      for (let i=0; i<teamNumber.innerHTML; i++) {
+      teamsRow.innerHTML += `<div class="col-3 team">
+          <div class="team-creation">
+            <p class="table-creation"> Team ${i+1}</p>
+            <ul class="list-group">
+            </ul>
+          </div>
+        </div>`
+      }
+    }
+    function assign() {
+      const person = personsList.children[0]
+      const teams= document.querySelectorAll(".team")
+      const randomIndex= Math.floor(Math.random()* teams.length)
+      teams[randomIndex].appendChild(person)
+    }
+
+    function addTeam () {
+      const newTeamNumber= parseInt(teamNumber.innerHTML) +1
+      teamNumber.innerHTML = newTeamNumber
+
+      teamsRow.innerHTML += `<div class="col-3 team">
+          <div class="team-creation">
+            <p class="table-creation"> Team ${newTeamNumber }</p>
+            <ul class="list-group">
+            </ul>
+          </div>
+        </div>`
+
+    }
+
+    // const addNewPerson = function () {
+    //   let addedPerson = document.getElementById("new-person").value
+    //   let ul = document.getElementById("persons-list");
+    //   let li = document.createElement("li");
+    //   li.innerText = addedPerson
+    //   ul.appendChild(li)
+    //   li.setAttribute("class", "list-group-item")
+    //   document.getElementById("new-person").value = ""
+    // }
+
+    // let addPersonbtn = document.getElementById("add-button")
+    // addPersonbtn.onclick = addNewPerson
+    // creating loop for team selection
+    // let teamSize= parseInt(document.getElementById("team-number").value)
+    // let names = Array.from(document.getElementsByTagName("li"))
+      // let allTeams = []
+      // let namePicker= Math.floor(Math.random() * names.length)
+
+
+    // for (j=0; j<=teamSize; j++) {
+    // let team=[]
+    // for (i=0; i<2; i++) {
+    //     team.push(names[namePicker].innerText)
+    //     names.splice(namePicker,1)
+    // }
+    // allTeams.push(team)
+
+
+
+
+
+  </script>
+
+  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+    crossorigin="anonymous"></script>
+
+
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+  <!--
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
     -->
-  </body>
+</body>
+
 </html>
