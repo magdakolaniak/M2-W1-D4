@@ -27,50 +27,53 @@
         <p class="table-creation">Please insert the name of participants and press "add"</p>
       </div>
       <div class="col-6">
-<p class="table-creation">Add number of teams you want</p></div>
+        <p class="table-creation">Add number of teams you want</p>
+      </div>
 
       <div class="col-6 ">
         <form onsubmit="addPerson(event)">
           <input id="new-person" type="text" class="form-control" placeholder="Participant's name"
             aria-label="Recipient's username" aria-describedby="basic-addon2">
 
-          <button class="btn btn-outline-secondary" type="submit" id="add-button">Add to list</button>
+          <button class="btn btn-outline-secondary mt-2" type="submit" id="add-button">Add to list</button>
         </form>
       </div>
 
       <div class="col-6 ">
-        <button class= "btn btn-outline-secondary mr-3" onclick="addTeam()">Increase </button><span id="team-number" >2</span>
+        <button class="btn btn-outline-secondary mr-3" onclick="addTeam()">Increase </button><span
+          id="team-number">1</span>
 
-        <!-- <button class="btn btn-outline-secondary" type="button" id="team-number-button">Submit</button> -->
+        <button class="btn btn-outline-secondary ml-3" type="button" id="team-number-button" onclick="removeTeam()">Decrease</button>
       </div>
 
-    </div>
 
 
-    <div class="col-6 mx-auto">
-      <div class="list-creation">
-        <p class="table-creation"> Your particiants
+
+      <div class="col-6 mt-4">
+
+        <p class="table-creation"> Your participants
         </p>
 
         <ul id="persons-list" class="list-group">
         </ul>
         <button class="btn btn-outline-secondary mx-auto mt-2 " onclick="assign()">Assign</button>
+
       </div>
     </div>
     <div class="col-12 my-5">
-      <div id= "teams-row" class="row">
-        
-        
-    </div>
+      <div id="teams-row" class="row">
 
-  </div>
+
+      </div>
+
+    </div>
   </div>
   <!-- Optional JavaScript; choose one of the two! -->
   <script>
 
     const newPerson = document.querySelector("#new-person")
     const personsList = document.querySelector("#persons-list")
-    const teamsRow= document.querySelector("#teams-row")
+    const teamsRow = document.querySelector("#teams-row")
     const teamNumber = document.querySelector("#team-number")
 
     function addPerson(event) {
@@ -81,15 +84,16 @@
       li.classList.add("list-group-item")
       li.innerHTML = newPerson.value
       personsList.appendChild(li)
+      newPerson.value= ""
     }
-    window.onload = function() {
+    window.onload = function () {
       createTeams()
     }
-    function createTeams () {
-      for (let i=0; i<teamNumber.innerHTML; i++) {
-      teamsRow.innerHTML += `<div class="col-3 team">
+    function createTeams() {
+      for (let i = 0; i < teamNumber.innerHTML; i++) {
+        teamsRow.innerHTML += `<div class="col-3 team">
           <div class="team-creation">
-            <p class="table-creation"> Team ${i+1}</p>
+            <p class="table-creation"> Team ${i + 1}</p>
             <ul class="list-group">
             </ul>
           </div>
@@ -98,25 +102,34 @@
     }
     function assign() {
       const person = personsList.children[0]
-      const teams= document.querySelectorAll(".team")
-      const randomIndex= Math.floor(Math.random()* teams.length)
+      const teams = document.querySelectorAll(".team")
+      const randomIndex = Math.floor(Math.random() * teams.length)
       teams[randomIndex].appendChild(person)
     }
 
-    function addTeam () {
-      const newTeamNumber= parseInt(teamNumber.innerHTML) +1
+    function addTeam() {
+      const newTeamNumber = parseInt(teamNumber.innerHTML) + 1
       teamNumber.innerHTML = newTeamNumber
 
       teamsRow.innerHTML += `<div class="col-3 team">
           <div class="team-creation">
-            <p class="table-creation"> Team ${newTeamNumber }</p>
+            <p class="table-creation"> Team ${newTeamNumber}</p>
             <ul class="list-group">
             </ul>
           </div>
         </div>`
 
     }
+    function removeTeam() {
+      const teamList=document.querySelectorAll(".team")
+      const lastTeam= teamList[teamList.length-1]
+      const list = lastTeam.querySelector("ul")
 
+      while (list.children.length !==0) {
+        personsList.appendChild(list.children[0])
+      }
+      lastTeam.remove()
+    }
     // const addNewPerson = function () {
     //   let addedPerson = document.getElementById("new-person").value
     //   let ul = document.getElementById("persons-list");
